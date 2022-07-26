@@ -1,4 +1,5 @@
-package com.example.sociallogin
+package com.dew.logindemo_dew;
+
 
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
