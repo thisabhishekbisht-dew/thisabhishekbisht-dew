@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "745099685056",
+    "project_id": "sociallogindemo-d27a5",
+    "storage_bucket": "sociallogindemo-d27a5.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:745099685056:android:5b1af2144751e4d1ef9125",
+        "android_client_info": {
+          "package_name": "com.dew.logindemo_dew"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "745099685056-l04jndt40as17vbvov6idig2ubbvgd96.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.dew.logindemo_dew",
+            "certificate_hash": "51748d45807632542f679d39b364ffd6401363c1"
+          }
+        },
+        {
+          "client_id": "745099685056-n5nk6sh15if6o9lral5qkmk273loa6kq.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBaJ_oX5daDxIQzTnFiq9RDuDD7E615b-k"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "745099685056-n5nk6sh15if6o9lral5qkmk273loa6kq.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

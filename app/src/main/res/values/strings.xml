@@ -1,0 +1,6 @@
+<resources>
+    <string name="app_name">LoginDemo_Dew</string>
+    <string name="facebook_app_id">728419181573987</string>
+    <string name="fb_login_protocol_scheme">fb728419181573987</string>
+    <string name="facebook_client_token">dc47f1fd4ed86274138f3453e62a4bfb</string>
+</resources>
