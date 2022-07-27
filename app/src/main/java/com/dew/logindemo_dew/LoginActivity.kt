@@ -21,12 +21,13 @@ import com.facebook.login.LoginManager
 import com.facebook.login.LoginResult
 import com.facebook.login.widget.LoginButton
 import com.google.android.gms.auth.api.identity.BeginSignInRequest
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.firebase.auth.*
 
 
 
-class LoginActivity : AppCompatActivity() {
+class LoginActivity : AppCompatActivity(),GoogleSignInHelper.OnGoogleSignInListener {
     var loginButton: LoginButton? = null
     var callbackManager: CallbackManager? = null
     private val mGoogleSignInClient: GoogleSignInClient? = null
@@ -39,9 +40,10 @@ class LoginActivity : AppCompatActivity() {
     private var mAuth: FirebaseAuth? = null
     private var mCallbackManager: CallbackManager? = null
     var signInRequest: BeginSignInRequest? = null
+
+    private var googleSignInHelper: GoogleSignInHelper? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         // load the layout
         setContentView(R.layout.login_activity)
         gmail = findViewById(R.id.gmail)
@@ -56,13 +58,23 @@ class LoginActivity : AppCompatActivity() {
         // Initialize Facebook Login button
         mCallbackManager = create()
         callbackManager = create()
-        loginButton = findViewById(R.id.login_button)
-        gmail.setOnClickListener(View.OnClickListener { })
-        facebook.setOnClickListener(View.OnClickListener { view: View? ->
-            val loginButton = findViewById<LoginButton>(R.id.login_button)
-            loginButton.setReadPermissions("email", "public_profile")
-            loginButton.registerCallback(mCallbackManager, object : FacebookCallback<LoginResult?> {
 
+        loginButton = findViewById(R.id.login_button)
+        val loginButton = findViewById<LoginButton>(R.id.login_button)
+        loginButton.setReadPermissions("email", "public_profile")
+
+        //----------------------------------Google +Sign in-----------------------------------//
+        googleSignInHelper = GoogleSignInHelper(this, this)
+        googleSignInHelper!!.connect()
+
+        gmail.setOnClickListener {
+            googleSignInHelper!!.signIn()
+
+        }
+
+        loginButton.setOnClickListener(View.OnClickListener { view: View? ->
+
+            loginButton.registerCallback(mCallbackManager, object : FacebookCallback<LoginResult?> {
 
                 override fun onCancel() {
                     Log.d(TAG, "facebook:onCancel")
@@ -71,24 +83,26 @@ class LoginActivity : AppCompatActivity() {
                 override fun onError(error: FacebookException) {}
                 override fun onSuccess(result: LoginResult?) {
                     Log.d(TAG, "facebook:onSuccess:$result")
-                    handleFacebookAccessToken(result!!.accessToken)
+                    val intent = Intent(this@LoginActivity, ShareDataToSocial::class.java)
+                    intent.putExtra("user_name", result?.accessToken?.userId)
+                    intent.putExtra("user_email",result?.accessToken?.userId)
+                    startActivity(intent)
+                   // handleFacebookAccessToken(result!!.accessToken)
                 }
             })
         })
-        LoginManager.getInstance().registerCallback(
-            callbackManager!!,
+        LoginManager.getInstance().registerCallback(callbackManager!!,
             object : FacebookCallback<LoginResult?> {
-
-
                 override fun onCancel() {
                     // App code
                 }
 
                 override fun onError(exception: FacebookException) {
-                    // App code
+                    Log.e("userid",exception.toString())
                 }
 
                 override fun onSuccess(result: LoginResult?) {
+                       Log.e("userid","succes")
 
                 }
             })
@@ -101,7 +115,6 @@ class LoginActivity : AppCompatActivity() {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         callbackManager!!.onActivityResult(requestCode, resultCode, data)
-
         // The activity result pass back to the Facebook SDK
         mCallbackManager!!.onActivityResult(requestCode, resultCode, data)
         super.onActivityResult(requestCode, resultCode, data)
@@ -109,8 +122,9 @@ class LoginActivity : AppCompatActivity() {
 
     override fun onStart() {
         super.onStart()
+        googleSignInHelper!!.onStart()
 
-        // Checking if the user is signed in (non-null) and update UI accordingly.
+  /*      // Checking if the user is signed in (non-null) and update UI accordingly.
         val currentUser = mAuth!!.currentUser
 
         // Check if user is signed in (non-null) and update UI accordingly.
@@ -121,7 +135,7 @@ class LoginActivity : AppCompatActivity() {
                 "Currently Logged in: " + currentUser.email,
                 Toast.LENGTH_LONG
             ).show()
-        }
+        }*/
     }
 
     private fun handleFacebookAccessToken(token: AccessToken) {
@@ -141,6 +155,11 @@ class LoginActivity : AppCompatActivity() {
                         Toast.LENGTH_SHORT
                     )
                         .show()
+
+                    val intent = Intent(this@LoginActivity, ShareDataToSocial::class.java)
+                    intent.putExtra("user_name", token.userId)
+                    intent.putExtra("user_email", token.userId)
+                    startActivity(intent)
                 } else {
                     // If sign-in fails, a message will display to the user.
                     Log.w(TAG, "signInWithCredential:failure", task.exception)
@@ -155,6 +174,21 @@ class LoginActivity : AppCompatActivity() {
         // ...
         private const val REQ_ONE_TAP = 2 // Can be any integer unique to the Activity.
         private const val RC_SIGN_IN = 12345
+    }
+
+    override fun OnGSignInSuccess(googleSignInAccount: GoogleSignInAccount?) {
+        if (googleSignInAccount != null) {
+            Log.e("name:>>>>>",googleSignInAccount.givenName + googleSignInAccount.photoUrl)
+            val intent = Intent(this@LoginActivity, ShareDataToSocial::class.java)
+            intent.putExtra("user_name", googleSignInAccount.givenName)
+            intent.putExtra("user_email", googleSignInAccount.email)
+            startActivity(intent)
+
+        }
+    }
+
+    override fun OnGSignInError(error: String?) {
+    Log.e("name:>>>>>",error.toString())
     }
 }
 

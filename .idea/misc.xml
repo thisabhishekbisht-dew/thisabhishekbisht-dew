@@ -6,7 +6,13 @@
         <entry key="app/src/main/res/drawable-v24/ic_google.xml" value="0.1375" />
         <entry key="app/src/main/res/drawable-v24/ic_google_main.xml" value="0.1375" />
         <entry key="app/src/main/res/drawable/dwe_logo_white.xml" value="0.1375" />
+        <entry key="app/src/main/res/drawable/ic_baseline_link_24.xml" value="0.1165" />
+        <entry key="app/src/main/res/drawable/ic_baseline_video_call.xml" value="0.1165" />
+        <entry key="app/src/main/res/drawable/rounded_corner.xml" value="0.1165" />
+        <entry key="app/src/main/res/layout/activity_share_data_to_social.xml" value="0.21875" />
         <entry key="app/src/main/res/layout/activity_splash.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/custom_layout.xml" value="0.21875" />
+        <entry key="app/src/main/res/layout/login_activity.xml" value="0.1634963768115942" />
         <entry key="app/src/main/res/layout/social_login.xml" value="0.18385416666666668" />
       </map>
     </option>
