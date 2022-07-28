@@ -118,6 +118,7 @@ class LoginActivity : AppCompatActivity(),GoogleSignInHelper.OnGoogleSignInListe
         // The activity result pass back to the Facebook SDK
         mCallbackManager!!.onActivityResult(requestCode, resultCode, data)
         super.onActivityResult(requestCode, resultCode, data)
+        googleSignInHelper?.onActivityResult(requestCode, resultCode, data)
     }
 
     override fun onStart() {

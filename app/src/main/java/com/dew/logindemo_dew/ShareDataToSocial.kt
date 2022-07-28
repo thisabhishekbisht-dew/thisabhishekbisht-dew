@@ -20,10 +20,7 @@ import com.facebook.FacebookCallback
 import com.facebook.FacebookException
 import com.facebook.login.LoginManager
 import com.facebook.share.Sharer
-import com.facebook.share.model.SharePhoto
-import com.facebook.share.model.SharePhotoContent
-import com.facebook.share.model.ShareVideo
-import com.facebook.share.model.ShareVideoContent
+import com.facebook.share.model.*
 import com.facebook.share.widget.ShareDialog
 import java.util.*
 
@@ -45,9 +42,11 @@ class ShareDataToSocial : AppCompatActivity() {
     lateinit var LogoutB: Button
     lateinit var main_linked_in_sign_in_button: Button
 
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_share_data_to_social)
+
         fbShareButton = findViewById(R.id.main_fb_share_button)
         main_name_txt = findViewById(R.id.main_name_txt)
         main_email_txt = findViewById(R.id.main_email_txt)
@@ -167,12 +166,13 @@ class ShareDataToSocial : AppCompatActivity() {
         val videoLayout = view.findViewById<LinearLayout>(R.id.videoLayout)
         builder.setView(view)
         linkLayout.setOnClickListener {
-         /*   val fbConnectHelper = FacebookHelper(this)
-            fbConnectHelper.shareOnFBWall(
-                "Social Login",
-                "Android Facebook and Google+ Login",
-                Uri.parse(URL)
-            )*/
+                if (ShareDialog.canShow(ShareLinkContent::class.java)) {
+                    val linkContent: ShareLinkContent = ShareLinkContent.Builder()
+                        .setContentUrl(Uri.parse(URL))
+                        .setQuote("sharing")
+                        .build()
+                    shareDialog!!.show(linkContent)
+                }
         }
         videoLayout.setOnClickListener {
              val intent = Intent(Intent.ACTION_PICK,MediaStore.Video.Media.EXTERNAL_CONTENT_URI)
@@ -248,12 +248,39 @@ class ShareDataToSocial : AppCompatActivity() {
             intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://twitter.com/AtulDew"))
         }
         this.startActivity(intent)
+
+
+
         val shareIntent = Intent()
         shareIntent.action = Intent.ACTION_SEND
         shareIntent.setPackage("com.twitter.android")
         shareIntent.putExtra(Intent.EXTRA_STREAM, "imgUriForShare")
         shareIntent.type = "image/*"
         Intent.createChooser(shareIntent, "Share Image")
+     //   deleteTempImageLauncher.launch(shareIntent)
 
+     /*   try {
+            Log.i("Yes twitter", "no twitter native")
+            val intent = Intent(Intent.ACTION_SEND)
+            intent.putExtra(Intent.EXTRA_TEXT, "this is a tweet")
+            intent.type = "text/plain"
+            val pm = packageManager
+            val activityList: List<*> = pm.queryIntentActivities(intent, 0)
+            val len = activityList.size
+            for (i in 0 until len) {
+                val app = activityList[i] as ResolveInfo
+                if ("com.twitter.android.PostActivity" == app.activityInfo.name) {
+                    val activity = app.activityInfo
+                    val name = ComponentName(activity.applicationInfo.packageName, activity.name)
+                    intent.addCategory(Intent.CATEGORY_LAUNCHER)
+                    intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_RESET_TASK_IF_NEEDED
+                    intent.component = name
+                    startActivity(intent)
+                    break
+                }
+            }
+        } catch (e: ActivityNotFoundException) {
+            Log.i("twitter", "no twitter native", e)
+        }*/
     }
 }
