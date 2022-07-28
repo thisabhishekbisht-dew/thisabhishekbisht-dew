@@ -13,4 +13,10 @@
         <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
         <!-- Customize your theme here. -->
     </style>
+
+    <style name="CustomAlertDialog" parent="Theme.AppCompat.Light.Dialog.Alert">
+        <item name="android:windowBackground">@drawable/rounded_corner</item>
+        <item name="colorAccent">@android:color/white</item>
+        <item name="android:textColorPrimary">@color/bg_btn_facebook_normal</item>
+    </style>
 </resources>

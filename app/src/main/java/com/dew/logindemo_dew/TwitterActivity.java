@@ -21,7 +21,6 @@ public class TwitterActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-
         OAuthProvider.Builder provider = OAuthProvider.newBuilder("twitter.com");
 
         // Target specific email with login hint.
