@@ -64,8 +64,9 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:gravity="center"
-        android:layout_marginTop="40dp">
+        android:layout_marginTop="55dp"
+        android:gravity="center">
+
         <Button
             android:id="@+id/main_fb_share_button"
             android:layout_width="match_parent"
@@ -74,9 +75,9 @@
             android:background="@color/bg_btn_google_plus_pressed"
             android:gravity="center"
             android:text="Share to fb"
+            android:textAllCaps="false"
             android:textColor="@android:color/white"
-            android:textSize="16sp"
-            android:textAllCaps="false"/>
+            android:textSize="16sp" />
 
         <Button
             android:id="@+id/main_linked_in_sign_in_button"
@@ -93,8 +94,25 @@
             android:text="@string/share_twitter"
             android:textAllCaps="false"
             android:textColor="@android:color/white"
-            android:textSize="16sp" />
+            android:textSize="16sp"
+            android:visibility="gone" />
 
+        <Button
+            android:id="@+id/shareButton"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_below="@+id/main_linked_in_sign_in_button"
+            android:layout_centerHorizontal="true"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginBottom="10dp"
+            android:background="@color/bg_btn_linked_in_pressed"
+            android:gravity="center"
+            android:text="Share"
+            android:textAllCaps="false"
+            android:textColor="@android:color/white"
+            android:textSize="16sp" />
 
         <Button
             android:id="@+id/LogoutB"

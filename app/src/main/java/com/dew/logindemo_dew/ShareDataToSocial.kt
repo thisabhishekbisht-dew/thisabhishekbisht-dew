@@ -31,18 +31,17 @@ class ShareDataToSocial : AppCompatActivity() {
     lateinit var main_email_txt: TextView
     private val URL = "https://github.com/rajivmanivannan/Android-Social-Login"
     var REQUEST_TAKE_GALLERY_VIDEO: Int = 1
+    var GALLERY_VIDEO: Int = 0
     var filemanagerstring: String = ""
     private var shareDialog: ShareDialog? = null
     private var callbackManager: CallbackManager? = null
-
     //Google plus sign-in button
     private var googleSignInHelper: GoogleSignInHelper? = null
-
     lateinit var builder:AlertDialog
     lateinit var LogoutB: Button
     lateinit var main_linked_in_sign_in_button: Button
-
-
+    lateinit var shareButton: Button
+    lateinit var stringValue: String
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_share_data_to_social)
@@ -52,6 +51,7 @@ class ShareDataToSocial : AppCompatActivity() {
         main_email_txt = findViewById(R.id.main_email_txt)
         LogoutB = findViewById(R.id.LogoutB)
         main_linked_in_sign_in_button = findViewById(R.id.main_linked_in_sign_in_button)
+        shareButton = findViewById(R.id.shareButton)
 
         val userName: String = intent.getStringExtra("user_name").toString()
         val email: String = intent.getStringExtra("user_email").toString()
@@ -71,6 +71,9 @@ class ShareDataToSocial : AppCompatActivity() {
         main_linked_in_sign_in_button.setOnClickListener {
          shareOnTwiter()
 
+        }
+        shareButton.setOnClickListener {
+            showDialog("share")
         }
 
         LogoutB.setOnClickListener {
@@ -105,43 +108,19 @@ class ShareDataToSocial : AppCompatActivity() {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (resultCode == RESULT_OK) {
+            var selectedImageUri: Uri = data?.data!!;
+            val cr: ContentResolver = this.getContentResolver()
+            val mime = cr.getType(selectedImageUri)
             if (requestCode == REQUEST_TAKE_GALLERY_VIDEO) {
-                var selectedImageUri: Uri = data?.data!!;
-                val cr: ContentResolver = this.getContentResolver()
-                val mime = cr.getType(selectedImageUri)
-                Log.e("mime::-------", mime+"")
-
                 val accessToken = AccessToken.getCurrentAccessToken()
                 if (accessToken == null) {
                     Log.d("TAG", accessToken+">>>" + "Signed Out")
                 } else {
                     shareOnFacebook(selectedImageUri,mime)
                 }
-
-
-               /* if (mime.toString().contains("image")) {
-                    val  photo: SharePhoto =  SharePhoto.Builder()
-                        .setImageUrl(selectedImageUri)
-                        .build();
-                    val photoContent: SharePhotoContent =  SharePhotoContent.Builder()
-                        .addPhoto(photo)
-                        .build()
-                    shareDialog!!.show(photoContent, ShareDialog.Mode.AUTOMATIC)
-
-                }
-                else  if (mime.toString().contains("video")) {
-                    val video: ShareVideo = ShareVideo.Builder()
-                        .setLocalUrl(selectedImageUri)
-                        .build()
-                    val content: ShareVideoContent = ShareVideoContent.Builder()
-                        .setVideo(video)
-                        .build()
-                    shareDialog!!.show(content, ShareDialog.Mode.AUTOMATIC)
-                }
-                filemanagerstring = selectedImageUri.getPath().toString();
-                val selectedImagePath = parsePath(selectedImageUri);
-                Log.e("data::-------", selectedImagePath + "" + selectedImageUri)
-*/
+            }
+            else{
+                shareAllplatform(selectedImageUri,mime)
             }
         }
     }
@@ -156,7 +135,6 @@ class ShareDataToSocial : AppCompatActivity() {
             cursor.getString(columnIndex)
         } else null
     }
-
 
     fun showDialog( button:String) {
          builder = AlertDialog.Builder(this, R.style.CustomAlertDialog).create()
@@ -178,7 +156,12 @@ class ShareDataToSocial : AppCompatActivity() {
              val intent = Intent(Intent.ACTION_PICK,MediaStore.Video.Media.EXTERNAL_CONTENT_URI)
               intent.type = "image/* video/*";
          //   intent.setAction(Intent.ACTION_SEND);
+            if (button.equals("Facebook")){
             startActivityForResult(intent, REQUEST_TAKE_GALLERY_VIDEO)
+            }
+            else{
+                startActivityForResult(intent, GALLERY_VIDEO)
+            }
 
         }
         builder.setCanceledOnTouchOutside(true)
@@ -235,7 +218,17 @@ class ShareDataToSocial : AppCompatActivity() {
             }
         }
     }
-
+    fun shareAllplatform(fileUri: Uri?, mime: String?){
+        val intent = Intent(Intent.ACTION_SEND)
+        intent.type = "text/plain"
+        intent.putExtra(Intent.EXTRA_TEXT,fileUri)
+        if (fileUri != null) {
+            intent.putExtra(Intent.EXTRA_STREAM, fileUri)
+            intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+            intent.type = "image/* video/*"
+        }
+        startActivity(Intent.createChooser(intent,"Share to:-"))
+    }
     fun shareOnTwiter(){
         var intent: Intent? = null
         try {
