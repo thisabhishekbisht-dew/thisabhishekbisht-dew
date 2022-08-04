@@ -49,9 +49,6 @@ class LoginActivity : AppCompatActivity(),GoogleSignInHelper.OnGoogleSignInListe
         gmail = findViewById(R.id.gmail)
         mAuth = FirebaseAuth.getInstance()
         twitter = findViewById(R.id.twitter)
-        facebook = findViewById(R.id.facebook)
-
-
         // Initialize Firebase Auth
         mAuth = FirebaseAuth.getInstance()
 
