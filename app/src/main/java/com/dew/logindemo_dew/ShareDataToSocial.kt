@@ -9,11 +9,13 @@ import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
 import android.util.Log
+import android.view.View
 import android.widget.Button
 import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.isVisible
 import com.facebook.AccessToken
 import com.facebook.CallbackManager
 import com.facebook.FacebookCallback
@@ -35,9 +37,10 @@ class ShareDataToSocial : AppCompatActivity() {
     var filemanagerstring: String = ""
     private var shareDialog: ShareDialog? = null
     private var callbackManager: CallbackManager? = null
+
     //Google plus sign-in button
     private var googleSignInHelper: GoogleSignInHelper? = null
-    lateinit var builder:AlertDialog
+    lateinit var builder: AlertDialog
     lateinit var LogoutB: Button
     lateinit var main_linked_in_sign_in_button: Button
     lateinit var shareButton: Button
@@ -62,14 +65,14 @@ class ShareDataToSocial : AppCompatActivity() {
         googleSignInHelper = GoogleSignInHelper(this)
         callbackManager = CallbackManager.Factory.create();
         shareDialog = ShareDialog(this)
-         shareDialog!!.registerCallback(callbackManager!!,callback);
+        shareDialog!!.registerCallback(callbackManager!!, callback);
 
         fbShareButton.setOnClickListener {
-            showDialog("FaceBook")
+            showDialog("Facebook")
 
         }
         main_linked_in_sign_in_button.setOnClickListener {
-         shareOnTwiter()
+            shareOnTwiter()
 
         }
         shareButton.setOnClickListener {
@@ -85,22 +88,24 @@ class ShareDataToSocial : AppCompatActivity() {
 
         }
     }
+
     private val callback: FacebookCallback<Sharer.Result> =
         object : FacebookCallback<Sharer.Result> {
             override fun onSuccess(result: Sharer.Result) {
-                Toast.makeText(applicationContext,"Share data sucess",Toast.LENGTH_SHORT).show()
+                Toast.makeText(applicationContext, "Share data sucess", Toast.LENGTH_SHORT).show()
                 builder.dismiss()
             }
 
             override fun onCancel() {
                 Log.v("cancle", "Sharing cancelled")
 
-                Toast.makeText(applicationContext,"Sharing cancelled",Toast.LENGTH_SHORT).show()
+                Toast.makeText(applicationContext, "Sharing cancelled", Toast.LENGTH_SHORT).show()
                 // Write some code to do some operations when you cancel sharing content.
             }
+
             override fun onError(error: FacebookException) {
                 Log.v("errror", error.message!!)
-                Toast.makeText(applicationContext,"Sharing Error",Toast.LENGTH_SHORT).show()
+                Toast.makeText(applicationContext, "Sharing Error", Toast.LENGTH_SHORT).show()
                 // Write some code to do some operations when some error occurs while sharing content.
             }
         }
@@ -114,13 +119,13 @@ class ShareDataToSocial : AppCompatActivity() {
             if (requestCode == REQUEST_TAKE_GALLERY_VIDEO) {
                 val accessToken = AccessToken.getCurrentAccessToken()
                 if (accessToken == null) {
-                    Log.d("TAG", accessToken+">>>" + "Signed Out")
+                    Log.d("TAG", accessToken + ">>>" + "Signed Out")
+                    shareAllplatform(selectedImageUri, mime)
                 } else {
-                    shareOnFacebook(selectedImageUri,mime)
+                    shareOnFacebook(selectedImageUri, mime)
                 }
-            }
-            else{
-                shareAllplatform(selectedImageUri,mime)
+            } else {
+                shareAllplatform(selectedImageUri, mime)
             }
         }
     }
@@ -136,30 +141,40 @@ class ShareDataToSocial : AppCompatActivity() {
         } else null
     }
 
-    fun showDialog( button:String) {
-         builder = AlertDialog.Builder(this, R.style.CustomAlertDialog).create()
+    fun showDialog(button: String) {
+        builder = AlertDialog.Builder(this, R.style.CustomAlertDialog).create()
         builder.setTitle("Share")
         val view = layoutInflater.inflate(R.layout.custom_layout, null)
         val linkLayout = view.findViewById<LinearLayout>(R.id.linkLayout)
         val videoLayout = view.findViewById<LinearLayout>(R.id.videoLayout)
+        val parentLayout = view.findViewById<LinearLayout>(R.id.parentLayout)
         builder.setView(view)
+
+        if (button.equals("Facebook", false)) {
+            parentLayout.weightSum=2F
+            linkLayout.visibility=View.VISIBLE
+        }
+        else{
+            parentLayout.weightSum=1F
+            linkLayout.visibility=View.GONE
+        }
+
         linkLayout.setOnClickListener {
-                if (ShareDialog.canShow(ShareLinkContent::class.java)) {
-                    val linkContent: ShareLinkContent = ShareLinkContent.Builder()
-                        .setContentUrl(Uri.parse(URL))
-                        .setQuote("sharing")
-                        .build()
-                    shareDialog!!.show(linkContent)
-                }
+            if (ShareDialog.canShow(ShareLinkContent::class.java)) {
+                val linkContent: ShareLinkContent = ShareLinkContent.Builder()
+                    .setContentUrl(Uri.parse(URL))
+                    .setQuote("sharing")
+                    .build()
+                shareDialog!!.show(linkContent)
+            }
         }
         videoLayout.setOnClickListener {
-             val intent = Intent(Intent.ACTION_PICK,MediaStore.Video.Media.EXTERNAL_CONTENT_URI)
-              intent.type = "image/* video/*";
-         //   intent.setAction(Intent.ACTION_SEND);
-            if (button.equals("Facebook")){
-            startActivityForResult(intent, REQUEST_TAKE_GALLERY_VIDEO)
-            }
-            else{
+            val intent = Intent(Intent.ACTION_PICK, MediaStore.Video.Media.EXTERNAL_CONTENT_URI)
+            intent.type = "image/* video/*";
+            //   intent.setAction(Intent.ACTION_SEND);
+            if (button.equals("Facebook", false)) {
+                startActivityForResult(intent, REQUEST_TAKE_GALLERY_VIDEO)
+            } else {
                 startActivityForResult(intent, GALLERY_VIDEO)
             }
 
@@ -172,7 +187,7 @@ class ShareDataToSocial : AppCompatActivity() {
     fun shareOnFacebook(fileUri: Uri?, mime: String?) {
         val intent = Intent(Intent.ACTION_SEND)
         intent.type = "text/plain"
-        intent.putExtra(Intent.EXTRA_TEXT,fileUri)
+        intent.putExtra(Intent.EXTRA_TEXT, fileUri)
         if (fileUri != null) {
             intent.putExtra(Intent.EXTRA_STREAM, fileUri)
             intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
@@ -195,19 +210,18 @@ class ShareDataToSocial : AppCompatActivity() {
             }
         }
         if (facebookAppFound) {
-           startActivity(intent)
+            startActivity(intent)
         } else {
             if (mime.toString().contains("image")) {
-                val  photo: SharePhoto =  SharePhoto.Builder()
+                val photo: SharePhoto = SharePhoto.Builder()
                     .setImageUrl(fileUri)
                     .build();
-                val photoContent: SharePhotoContent =  SharePhotoContent.Builder()
+                val photoContent: SharePhotoContent = SharePhotoContent.Builder()
                     .addPhoto(photo)
                     .build()
                 shareDialog!!.show(photoContent, ShareDialog.Mode.AUTOMATIC)
 
-            }
-            else  if (mime.toString().contains("video")) {
+            } else if (mime.toString().contains("video")) {
                 val video: ShareVideo = ShareVideo.Builder()
                     .setLocalUrl(fileUri)
                     .build()
@@ -218,23 +232,26 @@ class ShareDataToSocial : AppCompatActivity() {
             }
         }
     }
-    fun shareAllplatform(fileUri: Uri?, mime: String?){
+
+    fun shareAllplatform(fileUri: Uri?, mime: String?) {
         val intent = Intent(Intent.ACTION_SEND)
         intent.type = "text/plain"
-        intent.putExtra(Intent.EXTRA_TEXT,fileUri)
+        intent.putExtra(Intent.EXTRA_TEXT, fileUri)
         if (fileUri != null) {
             intent.putExtra(Intent.EXTRA_STREAM, fileUri)
             intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
             intent.type = "image/* video/*"
         }
-        startActivity(Intent.createChooser(intent,"Share to:-"))
+        startActivity(Intent.createChooser(intent, "Share to:-"))
     }
-    fun shareOnTwiter(){
+
+    fun shareOnTwiter() {
         var intent: Intent? = null
         try {
             // get the Twitter app if possible
             this.packageManager.getPackageInfo("com.twitter.android", 0)
-            intent = Intent(Intent.ACTION_VIEW, Uri.parse("twitter://user?user_id=1546364474533507072"))
+            intent =
+                Intent(Intent.ACTION_VIEW, Uri.parse("twitter://user?user_id=1546364474533507072"))
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
         } catch (e: Exception) {
             // no Twitter app, revert to browser
@@ -242,38 +259,36 @@ class ShareDataToSocial : AppCompatActivity() {
         }
         this.startActivity(intent)
 
-
-
         val shareIntent = Intent()
         shareIntent.action = Intent.ACTION_SEND
         shareIntent.setPackage("com.twitter.android")
         shareIntent.putExtra(Intent.EXTRA_STREAM, "imgUriForShare")
         shareIntent.type = "image/*"
         Intent.createChooser(shareIntent, "Share Image")
-     //   deleteTempImageLauncher.launch(shareIntent)
+        //   deleteTempImageLauncher.launch(shareIntent)
 
-     /*   try {
-            Log.i("Yes twitter", "no twitter native")
-            val intent = Intent(Intent.ACTION_SEND)
-            intent.putExtra(Intent.EXTRA_TEXT, "this is a tweet")
-            intent.type = "text/plain"
-            val pm = packageManager
-            val activityList: List<*> = pm.queryIntentActivities(intent, 0)
-            val len = activityList.size
-            for (i in 0 until len) {
-                val app = activityList[i] as ResolveInfo
-                if ("com.twitter.android.PostActivity" == app.activityInfo.name) {
-                    val activity = app.activityInfo
-                    val name = ComponentName(activity.applicationInfo.packageName, activity.name)
-                    intent.addCategory(Intent.CATEGORY_LAUNCHER)
-                    intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_RESET_TASK_IF_NEEDED
-                    intent.component = name
-                    startActivity(intent)
-                    break
-                }
-            }
-        } catch (e: ActivityNotFoundException) {
-            Log.i("twitter", "no twitter native", e)
-        }*/
+        /*   try {
+               Log.i("Yes twitter", "no twitter native")
+               val intent = Intent(Intent.ACTION_SEND)
+               intent.putExtra(Intent.EXTRA_TEXT, "this is a tweet")
+               intent.type = "text/plain"
+               val pm = packageManager
+               val activityList: List<*> = pm.queryIntentActivities(intent, 0)
+               val len = activityList.size
+               for (i in 0 until len) {
+                   val app = activityList[i] as ResolveInfo
+                   if ("com.twitter.android.PostActivity" == app.activityInfo.name) {
+                       val activity = app.activityInfo
+                       val name = ComponentName(activity.applicationInfo.packageName, activity.name)
+                       intent.addCategory(Intent.CATEGORY_LAUNCHER)
+                       intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_RESET_TASK_IF_NEEDED
+                       intent.component = name
+                       startActivity(intent)
+                       break
+                   }
+               }
+           } catch (e: ActivityNotFoundException) {
+               Log.i("twitter", "no twitter native", e)
+           }*/
     }
 }

@@ -4,4 +4,6 @@
     <string name="fb_login_protocol_scheme">fb728419181573987</string>
     <string name="facebook_client_token">dc47f1fd4ed86274138f3453e62a4bfb</string>
     <string name="share_twitter">Twitter Share</string>
+    <string name="sign_in_with_google">Sign in with Google</string>
+    <string name="sign_in_with_twitter">Sign in with Twitter</string>
 </resources>
