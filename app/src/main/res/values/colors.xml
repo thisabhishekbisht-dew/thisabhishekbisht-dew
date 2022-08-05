@@ -16,4 +16,6 @@
     <color name="bg_btn_linked_in_normal">#4875B4</color>
     <color name="bg_btn_linked_in_pressed">#008CC9</color>
     <color name="color_primary">#4875B4</color>
+    <color name="bg_btn_twitter_normal">#5EAADE</color>
+    <color name="bg_btn_twitter_pressed">#70b3e2</color>
 </resources>

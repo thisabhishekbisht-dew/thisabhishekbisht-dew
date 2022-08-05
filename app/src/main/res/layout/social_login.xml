@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     tools:context=".LoginActivity"
     android:background="@color/color_primary">
@@ -31,7 +32,7 @@
             android:textColor="#000000"
             android:textSize="45sp" />
 
-        <com.facebook.login.widget.LoginButton
+<!--        <com.facebook.login.widget.LoginButton
             xmlns:facebook="http://schemas.android.com/apk/res-auto"
             android:id="@+id/login_button"
             android:layout_width="match_parent"
@@ -59,14 +60,14 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:src="@drawable/ic_google"/>
-      <!--      <ImageView
+      &lt;!&ndash;      <ImageView
                 android:id="@+id/facebook"
                 android:layout_width="wrap_content"
                 android:layout_height="80dp"
                 android:layout_margin="5dp"
                 android:layout_weight="1"
                 android:src="@drawable/facebook"
-                android:visibility="gone"/>-->
+                android:visibility="gone"/>&ndash;&gt;
             <ImageView
                 android:id="@+id/twitter"
                 android:layout_width="80dp"
@@ -74,6 +75,77 @@
                 android:layout_margin="5dp"
                 android:layout_weight="1"
                 android:src="@drawable/twitter" />
-        </LinearLayout>
+        </LinearLayout>-->
+        //new
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <com.facebook.login.widget.LoginButton
+                xmlns:facebook="http://schemas.android.com/apk/res-auto"
+                android:id="@+id/login_button"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_centerHorizontal="true"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginStart="10dp"
+                android:layout_marginLeft="30dp"
+                android:layout_marginEnd="10dp"
+                android:layout_marginRight="30dp"
+                android:layout_marginBottom="10dp"
+                android:paddingTop="15dp"
+                android:paddingBottom="15dp"
+                app:com_facebook_login_text="Sign in with Facebook" />
+
+            <Button
+                android:layout_below="@+id/login_button"
+                android:id="@+id/gmail"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_centerHorizontal="true"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="10dp"
+                android:layout_marginBottom="10dp"
+                android:background="@drawable/bg_btn_google_plus"
+                android:gravity="center"
+                android:text="@string/sign_in_with_google"
+                android:textAllCaps="false"
+                android:textColor="@android:color/white"
+                android:textSize="16sp" />
+
+
+            <Button
+                android:id="@+id/twitter"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_below="@+id/gmail"
+                android:layout_centerHorizontal="true"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="10dp"
+                android:layout_marginBottom="10dp"
+                android:background="@drawable/bg_btn_twitter"
+                android:gravity="center"
+                android:text="@string/sign_in_with_twitter"
+                android:textAllCaps="false"
+                android:textColor="@android:color/white"
+                android:textSize="16sp" />
+
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="bottom|center_horizontal"
+                android:text="Sharing content to social media.\n Powerd by Dew"
+                android:layout_gravity="bottom"
+                android:textSize="18sp"
+                android:textColor="@color/white"
+                android:layout_alignParentBottom="true"
+                android:layout_marginBottom="20dp"/>
+
+        </RelativeLayout>
+
+
     </LinearLayout>
 </LinearLayout>

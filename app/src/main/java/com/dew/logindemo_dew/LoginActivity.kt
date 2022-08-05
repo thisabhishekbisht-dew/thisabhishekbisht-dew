@@ -31,8 +31,8 @@ class LoginActivity : AppCompatActivity(),GoogleSignInHelper.OnGoogleSignInListe
     var loginButton: LoginButton? = null
     var callbackManager: CallbackManager? = null
     private val mGoogleSignInClient: GoogleSignInClient? = null
-    private lateinit var twitter: ImageView
-    private lateinit var gmail: ImageView
+    private lateinit var twitter: Button
+    private lateinit var gmail: Button
     private lateinit var facebook: ImageView
     private val google_signIn: Button? = null
     private val showOneTapUI = true
