@@ -1,12 +1,9 @@
 package com.dew.logindemo_dew
 
+import android.app.ProgressDialog
 import android.content.Intent
-import android.content.pm.PackageManager
 import android.os.Bundle
-import android.util.Base64
 import android.util.Log
-import android.view.Menu
-import android.view.MenuItem
 import android.view.View
 import android.widget.Button
 import android.widget.ImageView
@@ -41,6 +38,7 @@ class LoginActivity : AppCompatActivity(),GoogleSignInHelper.OnGoogleSignInListe
     private var mCallbackManager: CallbackManager? = null
     var signInRequest: BeginSignInRequest? = null
 
+
     private var googleSignInHelper: GoogleSignInHelper? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -59,6 +57,8 @@ class LoginActivity : AppCompatActivity(),GoogleSignInHelper.OnGoogleSignInListe
         loginButton = findViewById(R.id.login_button)
         val loginButton = findViewById<LoginButton>(R.id.login_button)
         loginButton.setReadPermissions("email", "public_profile")
+
+
 
         //----------------------------------Google +Sign in-----------------------------------//
         googleSignInHelper = GoogleSignInHelper(this, this)
@@ -79,12 +79,12 @@ class LoginActivity : AppCompatActivity(),GoogleSignInHelper.OnGoogleSignInListe
 
                 override fun onError(error: FacebookException) {}
                 override fun onSuccess(result: LoginResult?) {
-                    Log.d(TAG, "facebook:onSuccess:$result")
-                    val intent = Intent(this@LoginActivity, ShareDataToSocial::class.java)
-                    intent.putExtra("user_name", result?.accessToken?.userId)
-                    intent.putExtra("user_email",result?.accessToken?.userId)
-                    startActivity(intent)
-                   // handleFacebookAccessToken(result!!.accessToken)
+                    val progressDialog = ProgressDialog(this@LoginActivity)
+                    progressDialog.setTitle("Application is loading")
+                    progressDialog.setCancelable(false)
+                    progressDialog.setMessage("please wait...")
+                    progressDialog.show()
+                    handleFacebookAccessToken(result!!.accessToken,progressDialog)
                 }
             })
         })
@@ -136,26 +136,19 @@ class LoginActivity : AppCompatActivity(),GoogleSignInHelper.OnGoogleSignInListe
         }*/
     }
 
-    private fun handleFacebookAccessToken(token: AccessToken) {
+    private fun handleFacebookAccessToken(token: AccessToken, progressDialog: ProgressDialog) {
+
+
         Log.d(TAG, "handleFacebookAccessToken:$token")
         val credential = FacebookAuthProvider.getCredential(token.token)
-        mAuth!!.signInWithCredential(credential)
-            .addOnCompleteListener(
-                this
-            ) { task ->
+        mAuth!!.signInWithCredential(credential).addOnCompleteListener(this) { task ->
                 if (task.isSuccessful) {
+                    progressDialog.dismiss()
                     // Sign in success, UI will update with the signed-in user's information
-                    Log.d(TAG, "signInWithCredential:success")
                     val user = mAuth!!.currentUser
-                    Toast.makeText(
-                        this@LoginActivity,
-                        "Authentication Succeeded.",
-                        Toast.LENGTH_SHORT
-                    )
-                        .show()
-
+                    Log.d(TAG, user?.displayName.toString())
                     val intent = Intent(this@LoginActivity, ShareDataToSocial::class.java)
-                    intent.putExtra("user_name", token.userId)
+                    intent.putExtra("user_name",user?.displayName.toString())
                     intent.putExtra("user_email", token.userId)
                     startActivity(intent)
                 } else {
