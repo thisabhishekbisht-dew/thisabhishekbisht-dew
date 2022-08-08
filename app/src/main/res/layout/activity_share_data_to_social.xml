@@ -20,13 +20,13 @@
         android:orientation="vertical"
         android:layout_marginLeft="10dp">
         <TextView
+            android:id="@+id/welcomeText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textColor="@color/white"
-            android:textSize="20sp"
+            android:textSize="16sp"
             android:text="Welcome"
             android:textStyle="bold"
-            android:gravity="center_horizontal"
             android:layout_marginTop="10dp"/>
 
         <TextView
@@ -36,7 +36,8 @@
             android:textColor="@color/black"
             android:textSize="20sp"
             android:text="User name"
-            android:layout_marginTop="10dp"/>
+            android:layout_marginTop="10dp"
+            android:visibility="gone"/>
 
 
         <TextView
@@ -47,7 +48,8 @@
             android:layout_marginTop="5dp"
             android:textColor="@color/color_accent"
             android:textSize="16sp"
-            android:text="Mail id" />
+            android:text="Mail id"
+            android:visibility="gone"/>
 
 
         <TextView

@@ -31,6 +31,7 @@ class ShareDataToSocial : AppCompatActivity() {
     lateinit var fbShareButton: Button
     lateinit var main_name_txt: TextView
     lateinit var main_email_txt: TextView
+    lateinit var welcomeText: TextView
     private val URL = "https://github.com/rajivmanivannan/Android-Social-Login"
     var REQUEST_TAKE_GALLERY_VIDEO: Int = 1
     var GALLERY_VIDEO: Int = 0
@@ -52,6 +53,7 @@ class ShareDataToSocial : AppCompatActivity() {
         fbShareButton = findViewById(R.id.main_fb_share_button)
         main_name_txt = findViewById(R.id.main_name_txt)
         main_email_txt = findViewById(R.id.main_email_txt)
+        welcomeText = findViewById(R.id.welcomeText)
         LogoutB = findViewById(R.id.LogoutB)
         main_linked_in_sign_in_button = findViewById(R.id.main_linked_in_sign_in_button)
         shareButton = findViewById(R.id.shareButton)
@@ -59,8 +61,11 @@ class ShareDataToSocial : AppCompatActivity() {
         val userName: String = intent.getStringExtra("user_name").toString()
         val email: String = intent.getStringExtra("user_email").toString()
 
+        Log.e("userName",userName);
+
         main_name_txt.text = userName
         main_email_txt.text = email
+        welcomeText.text = "Welcome:-$userName"
 
         googleSignInHelper = GoogleSignInHelper(this)
         callbackManager = CallbackManager.Factory.create();
