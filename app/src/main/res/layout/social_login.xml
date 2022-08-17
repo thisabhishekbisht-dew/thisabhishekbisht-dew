@@ -8,6 +8,7 @@
     tools:context=".LoginActivity"
     android:background="@color/color_primary">
 
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -32,57 +33,11 @@
             android:textColor="#000000"
             android:textSize="45sp" />
 
-<!--        <com.facebook.login.widget.LoginButton
-            xmlns:facebook="http://schemas.android.com/apk/res-auto"
-            android:id="@+id/login_button"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:layout_weight="1"
-            android:elevation="8dp"
-            android:layout_marginTop="20dp"
-            android:layout_marginLeft="5dp"
-            android:layout_marginRight="5dp"
-            facebook:com_facebook_login_text="FaceBook"/>
-
-        <LinearLayout
-            android:id="@+id/socialicons"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:weightSum="2"
-            android:orientation="horizontal"
-            android:layout_marginTop="50dp"
-            android:layout_gravity="center_horizontal">
-            <ImageView
-                android:layout_margin="5dp"
-                android:id="@+id/gmail"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:src="@drawable/ic_google"/>
-      &lt;!&ndash;      <ImageView
-                android:id="@+id/facebook"
-                android:layout_width="wrap_content"
-                android:layout_height="80dp"
-                android:layout_margin="5dp"
-                android:layout_weight="1"
-                android:src="@drawable/facebook"
-                android:visibility="gone"/>&ndash;&gt;
-            <ImageView
-                android:id="@+id/twitter"
-                android:layout_width="80dp"
-                android:layout_height="80dp"
-                android:layout_margin="5dp"
-                android:layout_weight="1"
-                android:src="@drawable/twitter" />
-        </LinearLayout>-->
-        //new
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <com.facebook.login.widget.LoginButton
-                xmlns:facebook="http://schemas.android.com/apk/res-auto"
+            <com.facebook.login.widget.LoginButton xmlns:facebook="http://schemas.android.com/apk/res-auto"
                 android:id="@+id/login_button"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -132,6 +87,23 @@
                 android:textColor="@android:color/white"
                 android:textSize="16sp" />
 
+
+            <Button
+                android:id="@+id/fbk_custom"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_below="@+id/twitter"
+                android:layout_centerHorizontal="true"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="10dp"
+                android:layout_marginBottom="10dp"
+                android:background="@drawable/bg_btn_twitter"
+                android:gravity="center"
+                android:text="@string/sign_in_with_facebook"
+                android:textAllCaps="false"
+                android:textColor="@android:color/white"
+                android:textSize="16sp" />
 
             <TextView
                 android:layout_width="match_parent"

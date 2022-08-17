@@ -24,7 +24,7 @@ public class TwitterActivity extends AppCompatActivity {
         OAuthProvider.Builder provider = OAuthProvider.newBuilder("twitter.com");
 
         // Target specific email with login hint.
-        provider.addCustomParameter("lang", "fr");
+        provider.addCustomParameter("lang", "eng");
 
         firebaseAuth = firebaseAuth.getInstance();
 

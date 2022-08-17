@@ -9,7 +9,7 @@ android {
     defaultConfig {
         applicationId "com.dew.logindemo_dew"
         minSdk 21
-        targetSdk 32
+        targetSdk 30
         versionCode 1
         versionName "1.0"
 
@@ -69,7 +69,7 @@ dependencies {
     implementation 'com.facebook.android:facebook-android-sdk:latest.release'
 */
 
-    implementation 'com.google.firebase:firebase-auth:21.0.6'
+    implementation 'com.google.firebase:firebase-auth:21.0.7'
     implementation 'com.google.android.gms:play-services-auth:20.2.0'
 
     implementation "androidx.coordinatorlayout:coordinatorlayout:1.2.0"

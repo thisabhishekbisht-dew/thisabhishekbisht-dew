@@ -6,4 +6,8 @@
     <string name="share_twitter">Twitter Share</string>
     <string name="sign_in_with_google">Sign in with Google</string>
     <string name="sign_in_with_twitter">Sign in with Twitter</string>
+    <string name="sign_in_with_facebook">Sign in with Facebook</string>
+
+    <string name="twitter_consumer_key" translatable="false"> XXXXXXXXXXX </string>
+    <string name="twitter_consumer_secret" translatable="false"> XXXXXXXXXXX </string>
 </resources>
